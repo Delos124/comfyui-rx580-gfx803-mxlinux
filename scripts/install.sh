@@ -58,17 +58,19 @@ else
   fail "$ROOT/app is non-empty but is not a Git checkout. Move or back it up manually; installer will not overwrite it."
 fi
 
-for SOURCE_DIR in "$ROOT/app/custom_nodes" "$ROOT/app/user"; do
-  TARGET_NAME="${SOURCE_DIR##*/}"
-  TARGET_DIR="$ROOT/$TARGET_NAME"
-  if [[ -d "$SOURCE_DIR" ]] && [[ -z "$(find "$TARGET_DIR" -mindepth 1 -maxdepth 1 -print -quit)" ]]; then
-    cp -a "$SOURCE_DIR/." "$TARGET_DIR/"
+# Merge legacy in-app data into persistent directories without overwriting files
+# already present in the persistent locations.
+for DATA_NAME in models input output custom_nodes user; do
+  SOURCE_DIR="$ROOT/app/$DATA_NAME"
+  TARGET_DIR="$ROOT/$DATA_NAME"
+  if [[ -d "$SOURCE_DIR" ]]; then
+    cp -an "$SOURCE_DIR/." "$TARGET_DIR/"
   fi
 done
 
 sudo docker pull "$IMAGE"
-if [[ -d "$ROOT/venv" ]]; then
-  sudo chown -R "$(id -u):$(id -g)" "$ROOT/venv"
+if [[ -d "$ROOT/venv-gfx803" ]]; then
+  sudo chown -R "$(id -u):$(id -g)" "$ROOT/venv-gfx803"
 fi
 if [[ -d "$ROOT/.cache" ]]; then
   sudo chown -R "$(id -u):$(id -g)" "$ROOT/.cache"
@@ -81,11 +83,12 @@ sudo docker run --rm \
   -w /workspace/comfyui/app \
   --entrypoint /bin/bash "$IMAGE" -lc '
     set -e
-    if [ ! -x /workspace/comfyui/venv/bin/python ]; then
-      python3 -m venv --system-site-packages /workspace/comfyui/venv
+    if [ ! -x /workspace/comfyui/venv-gfx803/bin/python ]; then
+      python3 -m venv --system-site-packages /workspace/comfyui/venv-gfx803
     fi
-    /workspace/comfyui/venv/bin/python -m pip install -r /tmp/requirements-gfx803.txt
-    /workspace/comfyui/venv/bin/python -c "import torch; print(torch.__version__); print(torch.version.hip)"
+    /workspace/comfyui/venv-gfx803/bin/python -c "import sys; assert sys.version_info[:2] == (3, 10), 'Expected Python 3.10 in the gfx803 environment'; print(sys.version)"
+    /workspace/comfyui/venv-gfx803/bin/python -m pip install -r /tmp/requirements-gfx803.txt
+    /workspace/comfyui/venv-gfx803/bin/python -c "import torch; print(torch.__version__); print(torch.version.hip)"
   '
 
 if sudo docker container inspect "$CONTAINER" >/dev/null 2>&1; then
@@ -108,7 +111,7 @@ else
     -v "$ROOT/user:/workspace/comfyui/app/user" \
     -w /workspace/comfyui/app \
     --entrypoint /bin/bash "$IMAGE" -lc \
-    'exec /workspace/comfyui/venv/bin/python main.py --listen 0.0.0.0 --port 8188 --lowvram --use-split-cross-attention' >/dev/null
+    'exec /workspace/comfyui/venv-gfx803/bin/python main.py --listen 0.0.0.0 --port 8188 --lowvram --use-split-cross-attention' >/dev/null
 fi
 
 printf '%s\n' "$ROOT" > "$REPO_DIR/.comfyui-root"
