@@ -71,7 +71,9 @@ sudo docker run --rm \
   '
 
 if sudo docker container inspect "$CONTAINER" >/dev/null 2>&1; then
-  printf 'Container %s already exists; leaving it unchanged.\n' "$CONTAINER"
+  EXISTING_ROOT="$(sudo docker inspect --format '{{range .Mounts}}{{if eq .Destination "/workspace/comfyui"}}{{.Source}}{{end}}{{end}}' "$CONTAINER")"
+  [[ "$EXISTING_ROOT" == "$ROOT" ]] || fail "Container $CONTAINER already uses $EXISTING_ROOT, not $ROOT. Stop and back up the existing installation before changing storage mode."
+  printf 'Container %s already exists and uses the selected data directory; leaving it unchanged.\\n' "$CONTAINER"
 else
   sudo docker create --name "$CONTAINER" --restart unless-stopped \
     --device=/dev/kfd --device=/dev/dri \
