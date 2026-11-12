@@ -9,7 +9,8 @@ output/
 *.pth
 *.bin
 
-# Local runtime state
+# Local runtime state and machine-specific paths
+.comfyui-root
 .env
 *.log
 *.pid
