@@ -7,9 +7,7 @@ After completing [Installation](INSTALLATION.md):
 ./scripts/start.sh
 ```
 
-**Open in your browser**
-
-http://127.0.0.1:8188
+Open http://127.0.0.1:8188 in your browser.
 
 **Stop**
 ```bash
@@ -21,9 +19,16 @@ http://127.0.0.1:8188
 ./scripts/diagnose.sh
 ```
 
+**Install MX Linux application-menu launchers**
+```bash
+./scripts/install-desktop.sh
+```
+
+This adds separate Start and Stop entries to your application menu. The Start entry opens a terminal and may request your sudo password. The Stop entry stops the container without deleting model or output files.
+
 **Back up your user data**
 ```bash
 ./scripts/backup.sh /path/to/backup-folder
 ```
 
-Keep your backup on a different physical disk when possible. Never delete the only copy of your model files or workflows.
+Replace `/path/to/backup-folder` with a real directory on another disk. Keep at least one backup copy separate from the computer's main storage.
