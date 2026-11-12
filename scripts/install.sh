@@ -42,7 +42,15 @@ fi
 DOCKER_ROOT="$(sudo docker info --format '{{.DockerRootDir}}')"
 printf 'ComfyUI data directory: %s\nDocker image storage: %s\n' "$ROOT" "$DOCKER_ROOT"
 mkdir -p "$ROOT"
-mkdir -p "$ROOT"/{app,models,input,output,custom_nodes}
+mkdir -p "$ROOT"/{app,models,input,output,custom_nodes,user}
+for SOURCE_DIR in "$ROOT/app/custom_nodes" "$ROOT/app/user"; do
+  TARGET_NAME="${SOURCE_DIR##*/}"
+  TARGET_DIR="$ROOT/$TARGET_NAME"
+  if [[ -d "$SOURCE_DIR" ]] && [[ -z "$(find "$TARGET_DIR" -mindepth 1 -maxdepth 1 -print -quit)" ]]; then
+    cp -a "$SOURCE_DIR/." "$TARGET_DIR/"
+  fi
+done
+
 [[ -w "$ROOT" ]] || fail "You cannot write to $ROOT as the current user."
 [[ -w "$ROOT/app" ]] || fail "You cannot write to $ROOT/app."
 FREE_KB="$(df -Pk "$DOCKER_ROOT" | awk 'NR==2 {print $4}')"
@@ -94,6 +102,8 @@ else
     -v "$ROOT/models:/workspace/comfyui/app/models" \
     -v "$ROOT/input:/workspace/comfyui/app/input" \
     -v "$ROOT/output:/workspace/comfyui/app/output" \
+    -v "$ROOT/custom_nodes:/workspace/comfyui/app/custom_nodes" \
+    -v "$ROOT/user:/workspace/comfyui/app/user" \
     -w /workspace/comfyui/app \
     --entrypoint /bin/bash "$IMAGE" -lc \
     'exec /workspace/comfyui/venv/bin/python main.py --listen 0.0.0.0 --port 8188 --lowvram --use-split-cross-attention' >/dev/null
