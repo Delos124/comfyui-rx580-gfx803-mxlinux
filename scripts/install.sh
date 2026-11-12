@@ -43,13 +43,7 @@ DOCKER_ROOT="$(sudo docker info --format '{{.DockerRootDir}}')"
 printf 'ComfyUI data directory: %s\nDocker image storage: %s\n' "$ROOT" "$DOCKER_ROOT"
 mkdir -p "$ROOT"
 mkdir -p "$ROOT"/{app,models,input,output,custom_nodes,user}
-for SOURCE_DIR in "$ROOT/app/custom_nodes" "$ROOT/app/user"; do
-  TARGET_NAME="${SOURCE_DIR##*/}"
-  TARGET_DIR="$ROOT/$TARGET_NAME"
-  if [[ -d "$SOURCE_DIR" ]] && [[ -z "$(find "$TARGET_DIR" -mindepth 1 -maxdepth 1 -print -quit)" ]]; then
-    cp -a "$SOURCE_DIR/." "$TARGET_DIR/"
-  fi
-done
+
 
 [[ -w "$ROOT" ]] || fail "You cannot write to $ROOT as the current user."
 [[ -w "$ROOT/app" ]] || fail "You cannot write to $ROOT/app."
@@ -63,6 +57,14 @@ elif [[ -z "$(find "$ROOT/app" -mindepth 1 -maxdepth 1 -print -quit)" ]]; then
 else
   fail "$ROOT/app is non-empty but is not a Git checkout. Move or back it up manually; installer will not overwrite it."
 fi
+
+for SOURCE_DIR in "$ROOT/app/custom_nodes" "$ROOT/app/user"; do
+  TARGET_NAME="${SOURCE_DIR##*/}"
+  TARGET_DIR="$ROOT/$TARGET_NAME"
+  if [[ -d "$SOURCE_DIR" ]] && [[ -z "$(find "$TARGET_DIR" -mindepth 1 -maxdepth 1 -print -quit)" ]]; then
+    cp -a "$SOURCE_DIR/." "$TARGET_DIR/"
+  fi
+done
 
 sudo docker pull "$IMAGE"
 if [[ -d "$ROOT/venv" ]]; then
