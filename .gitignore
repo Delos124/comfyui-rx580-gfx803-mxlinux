@@ -1,0 +1,20 @@
+# Model weights and generated data
+models/
+**/models/
+input/
+output/
+*.safetensors
+*.ckpt
+*.pt
+*.pth
+*.bin
+
+# Local runtime state
+.env
+*.log
+*.pid
+.cache/
+__pycache__/
+*.py[cod]
+.venv/
+venv/
