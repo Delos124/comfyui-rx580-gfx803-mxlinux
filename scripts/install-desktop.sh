@@ -4,15 +4,15 @@ SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
 APP_DIR="$HOME/.local/share/applications"
 mkdir -p "$APP_DIR"
 
-escape_desktop_path() {
+escape_desktop_exec_arg() {
   local value="$1"
   value="${value//\\/\\\\}"
-  value="${value// /\\s}"
-  printf '%s' "$value"
+  value="${value//\"/\\\"}"
+  printf '"%s"' "$value"
 }
 
-START_PATH="$(escape_desktop_path "$SCRIPT_DIR/start.sh")"
-STOP_PATH="$(escape_desktop_path "$SCRIPT_DIR/stop.sh")"
+START_PATH="$(escape_desktop_exec_arg "$SCRIPT_DIR/start.sh")"
+STOP_PATH="$(escape_desktop_exec_arg "$SCRIPT_DIR/stop.sh")"
 
 cat > "$APP_DIR/comfyui-rx580-start.desktop" <<EOF
 [Desktop Entry]
