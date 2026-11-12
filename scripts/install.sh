@@ -64,8 +64,8 @@ if [[ -d "$ROOT/.cache" ]]; then
   sudo chown -R "$(id -u):$(id -g)" "$ROOT/.cache"
 fi
 sudo docker run --rm \
-  --user "$(id -u):$(id -g)" \\
-  -e HOME=/workspace/comfyui -e XDG_CACHE_HOME=/workspace/comfyui/.cache \\
+  --user "$(id -u):$(id -g)" \
+  -e HOME=/workspace/comfyui -e XDG_CACHE_HOME=/workspace/comfyui/.cache \
   -v "$ROOT:/workspace/comfyui" \
   -v "$REPO_DIR/requirements-gfx803.txt:/tmp/requirements-gfx803.txt:ro" \
   -w /workspace/comfyui/app \
@@ -84,8 +84,8 @@ if sudo docker container inspect "$CONTAINER" >/dev/null 2>&1; then
   printf 'Container %s already exists and uses the selected data directory; leaving it unchanged.\\n' "$CONTAINER"
 else
   sudo docker create --name "$CONTAINER" --restart unless-stopped \
-    --user "$(id -u):$(id -g)" \\
-    -e HOME=/workspace/comfyui -e XDG_CACHE_HOME=/workspace/comfyui/.cache \\
+    --user "$(id -u):$(id -g)" \
+    -e HOME=/workspace/comfyui -e XDG_CACHE_HOME=/workspace/comfyui/.cache \
     --device=/dev/kfd --device=/dev/dri \
     --group-add video --group-add render \
     --security-opt seccomp=unconfined \
