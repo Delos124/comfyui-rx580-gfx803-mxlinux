@@ -51,7 +51,7 @@ FREE_KB="$(df -Pk "$DOCKER_ROOT" | awk 'NR==2 {print $4}')"
 if [[ -d "$ROOT/app/.git" ]]; then
   printf 'Existing Git checkout found. Preserving it.\n'
 elif [[ -z "$(find "$ROOT/app" -mindepth 1 -maxdepth 1 -print -quit)" ]]; then
-  git clone --branch "$COMFYUI_TAG" --depth 1 https://github.com/comfyanonymous/ComfyUI.git "$ROOT/app"
+  git clone --branch "$COMFYUI_TAG" --depth 1 https://github.com/Comfy-Org/ComfyUI.git "$ROOT/app"
 else
   fail "$ROOT/app is non-empty but is not a Git checkout. Move or back it up manually; installer will not overwrite it."
 fi
@@ -59,25 +59,16 @@ fi
 sudo docker pull "$IMAGE"
 sudo docker run --rm \
   -v "$ROOT:/workspace/comfyui" \
+  -v "$REPO_DIR/requirements-gfx803.txt:/tmp/requirements-gfx803.txt:ro" \
   -w /workspace/comfyui/app \
   --entrypoint /bin/bash "$IMAGE" -lc '
     set -e
     if [ ! -x /workspace/comfyui/venv/bin/python ]; then
       python3 -m venv --system-site-packages /workspace/comfyui/venv
     fi
-    /workspace/comfyui/venv/bin/python -m pip install -r /workspace/comfyui/requirements-gfx803.txt
+    /workspace/comfyui/venv/bin/python -m pip install -r /tmp/requirements-gfx803.txt
     /workspace/comfyui/venv/bin/python -c "import torch; print(torch.__version__); print(torch.version.hip)"
-  ' -- 2>/dev/null || {
-    # Requirements file is supplied from the repository checkout, not the ComfyUI app folder.
-    sudo docker run --rm -v "$ROOT:/workspace/comfyui" -v "$REPO_DIR/requirements-gfx803.txt:/tmp/requirements-gfx803.txt:ro" -w /workspace/comfyui/app --entrypoint /bin/bash "$IMAGE" -lc '
-      set -e
-      if [ ! -x /workspace/comfyui/venv/bin/python ]; then
-        python3 -m venv --system-site-packages /workspace/comfyui/venv
-      fi
-      /workspace/comfyui/venv/bin/python -m pip install -r /tmp/requirements-gfx803.txt
-      /workspace/comfyui/venv/bin/python -c "import torch; print(torch.__version__); print(torch.version.hip)"
-    '
-  }
+  '
 
 if sudo docker container inspect "$CONTAINER" >/dev/null 2>&1; then
   printf 'Container %s already exists; leaving it unchanged.\n' "$CONTAINER"
