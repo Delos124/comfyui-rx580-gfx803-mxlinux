@@ -36,6 +36,9 @@ This is a community compatibility workaround, not an official AMD-supported ROCm
 ## Main scripts
 
 ```bash
+# Make the scripts executable once after cloning
+chmod +x scripts/*.sh
+
 # Standard installation
 ./scripts/install.sh --mode standard
 
