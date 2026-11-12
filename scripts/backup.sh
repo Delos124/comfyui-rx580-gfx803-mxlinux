@@ -3,10 +3,16 @@ set -Eeuo pipefail
 SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
 REPO_DIR="$(cd -- "$SCRIPT_DIR/.." && pwd)"
 ROOT_FILE="$REPO_DIR/.comfyui-root"
-[[ -f "$ROOT_FILE" ]] || { echo "No install path recorded. Run install.sh first." >&2; exit 1; }
-[[ $# -eq 1 ]] || { echo "Usage: $0 /path/to/backup-directory" >&2; exit 2; }
-ROOT="$(<"$ROOT_FILE")"
+[[ $# -ge 1 && $# -le 2 ]] || { echo "Usage: $0 /path/to/backup-directory [comfyui-root]" >&2; exit 2; }
 DEST="$1"
+if [[ $# -eq 2 ]]; then
+  ROOT="$2"
+elif [[ -f "$ROOT_FILE" ]]; then
+  ROOT="$(<"$ROOT_FILE")"
+else
+  echo "No install path recorded. Supply the ComfyUI root as the second argument." >&2
+  exit 1
+fi
 [[ -d "$ROOT" ]] || { echo "ComfyUI root not found: $ROOT" >&2; exit 1; }
 mkdir -p "$DEST"
 DEST="$(cd -- "$DEST" && pwd)"
