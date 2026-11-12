@@ -1,0 +1,28 @@
+name: Validate shell scripts
+
+on:
+  push:
+    paths:
+      - "scripts/**"
+      - ".github/workflows/**"
+  pull_request:
+    paths:
+      - "scripts/**"
+      - ".github/workflows/**"
+
+jobs:
+  shell:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check Bash syntax
+        run: |
+          set -euo pipefail
+          while IFS= read -r -d '' script; do
+            bash -n "$script"
+          done < <(find scripts -type f -name '*.sh' -print0)
+      - name: Run ShellCheck
+        uses: ludeeus/action-shellcheck@master
+        with:
+          scandir: scripts
+          severity: warning
