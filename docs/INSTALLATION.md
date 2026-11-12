@@ -46,7 +46,7 @@ ComfyUI files live in your home directory:
 ```text
 ~/AI/ComfyUI/
   app/          ComfyUI source code
-  venv/         Python packages used by ComfyUI
+  venv-gfx803/  Python 3.10 environment used by the RX 580 container
   models/       Checkpoints, LoRAs, VAE files, etc.
   input/        Images supplied to workflows
   output/       Generated images
@@ -111,7 +111,7 @@ The installer will:
 2. Create the ComfyUI folder structure without deleting existing files.
 3. Download the pinned ComfyUI source tag if the app folder is empty.
 4. Download the pinned Docker image by digest.
-5. Create a Python virtual environment and install the repository's pinned ComfyUI dependencies.
+5. Create a separate Python 3.10 virtual environment (`venv-gfx803`) inside the pinned container image and install the repository's pinned dependencies. Any older host-side `venv/` is left untouched.
 6. Create a stopped Docker container named `comfyui-rx580`.
 
 It will not format partitions, change host graphics drivers, install ROCm on the host, or move Docker storage. If it finds an existing non-empty app folder, it will preserve it and stop rather than overwrite it.
