@@ -50,6 +50,8 @@ ComfyUI files live in your home directory:
   models/       Checkpoints, LoRAs, VAE files, etc.
   input/        Images supplied to workflows
   output/       Generated images
+  custom_nodes/ Persistent custom nodes
+  user/         Workflows and ComfyUI user settings
 ```
 
 Docker stores downloaded container images wherever Docker is configured to store them (commonly `/var/lib/docker`). Make sure that filesystem has enough free space.
@@ -69,6 +71,8 @@ Example layout:
     models/
     input/
     output/
+    custom_nodes/
+    user/
 ```
 
 The installer does not configure Docker's data-root. If you want Docker images on the partition, configure that separately using Docker's official storage documentation. Do not copy, delete, or migrate an existing Docker data-root as part of this installation.
