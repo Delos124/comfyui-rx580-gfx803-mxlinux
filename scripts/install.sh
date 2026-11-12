@@ -57,6 +57,12 @@ else
 fi
 
 sudo docker pull "$IMAGE"
+if [[ -d "$ROOT/venv" ]]; then
+  sudo chown -R "$(id -u):$(id -g)" "$ROOT/venv"
+fi
+if [[ -d "$ROOT/.cache" ]]; then
+  sudo chown -R "$(id -u):$(id -g)" "$ROOT/.cache"
+fi
 sudo docker run --rm \
   --user "$(id -u):$(id -g)" \\
   -e HOME=/workspace/comfyui -e XDG_CACHE_HOME=/workspace/comfyui/.cache \\
