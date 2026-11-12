@@ -35,7 +35,7 @@ sudo docker ps -a --filter "name=^/$CONTAINER$" 2>&1 || true
 if sudo docker container inspect "$CONTAINER" >/dev/null 2>&1; then
   STATE="$(sudo docker inspect --format '{{.State.Running}}' "$CONTAINER")"
   if [[ "$STATE" == "true" ]]; then
-    sudo docker exec "$CONTAINER" /workspace/comfyui/venv/bin/python -c 'import torch; print("PyTorch:", torch.__version__); print("HIP:", torch.version.hip); print("GPU available:", torch.cuda.is_available()); print("Device:", torch.cuda.get_device_name(0) if torch.cuda.is_available() else "unavailable")' 2>&1 || true
+    sudo docker exec "$CONTAINER" /workspace/comfyui/venv-gfx803/bin/python -c 'import torch; print("PyTorch:", torch.__version__); print("HIP:", torch.version.hip); print("GPU available:", torch.cuda.is_available()); print("Device:", torch.cuda.get_device_name(0) if torch.cuda.is_available() else "unavailable")' 2>&1 || true
   fi
   echo
   echo "=== LAST CONTAINER LOGS ==="
