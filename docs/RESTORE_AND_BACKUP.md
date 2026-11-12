@@ -11,7 +11,7 @@ At minimum:
 - `custom_nodes/` — persistent custom extensions.
 - `user/` — workflows and ComfyUI user settings.
 
-The Python virtual environment can usually be recreated, but keeping a record of the pinned image digest and dependency list is important.
+The Python 3.10 virtual environment (`venv-gfx803/`) can be recreated, but keeping a record of the pinned image digest and dependency list is important. Older host-side virtual environments are not used or overwritten.
 
 ## Create a backup
 
