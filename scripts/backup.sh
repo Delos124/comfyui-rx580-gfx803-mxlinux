@@ -15,7 +15,13 @@ STAMP="$(date +%Y%m%d-%H%M%S)"
 ARCHIVE="$DEST/comfyui-user-data-$STAMP.tar.gz"
 echo "Creating archive: $ARCHIVE"
 echo "This includes models, input/output, custom nodes, and user/workflow files; it excludes app source and the Python venv."
-tar -czf "$ARCHIVE" -C "$ROOT" --exclude='./app' --exclude='./venv' .
+PATHS=(models input output custom_nodes user)
+for RELATIVE_PATH in app/custom_nodes app/user; do
+  if [[ -d "$ROOT/$RELATIVE_PATH" ]]; then
+    PATHS+=("$RELATIVE_PATH")
+  fi
+done
+tar -czf "$ARCHIVE" -C "$ROOT" "${PATHS[@]}"
 sha256sum "$ARCHIVE" > "$ARCHIVE.sha256"
 echo "Backup complete:"
 ls -lh "$ARCHIVE" "$ARCHIVE.sha256"
