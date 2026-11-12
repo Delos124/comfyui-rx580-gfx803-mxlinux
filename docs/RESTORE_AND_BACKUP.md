@@ -27,6 +27,14 @@ Then run:
 ./scripts/backup.sh /path/to/backup-folder
 ```
 
+Before running the installer for the first time, you can specify the existing ComfyUI directory explicitly:
+
+```bash
+./scripts/backup.sh /path/to/backup-folder /mnt/ai/comfyui
+```
+
+Replace both example paths with your actual backup destination and ComfyUI directory.
+
 Replace `/path/to/backup-folder` with a real directory on a different disk. The script creates a timestamped archive. Ensure the destination has enough free space; model folders can be very large.
 
 ## Restore
