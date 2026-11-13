@@ -50,6 +50,9 @@ chmod +x scripts/*.sh
 ./scripts/start.sh
 ./scripts/stop.sh
 ./scripts/diagnose.sh
+
+# Verify optional IP-Adapter installation
+bash ./scripts/verify-ipadapter.sh
 ```
 
 The installer never formats disks, creates partitions, changes host graphics drivers, installs host ROCm, or migrates Docker's data directory. Docker image storage remains in Docker's configured data-root.
