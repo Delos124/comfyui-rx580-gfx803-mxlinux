@@ -17,7 +17,7 @@ The `old_` prefix is intentional: this fork preserves the older node implementat
 The base installer intentionally does not install optional custom nodes. Install this known-compatible historical fork with the repository helper:
 
 ```bash
-./scripts/install-ipadapter.sh
+bash ./scripts/install-ipadapter.sh
 ```
 
 The helper clones the pinned upstream revision only when the target directory does not exist. If the directory already exists, it verifies the remote and revision and refuses to overwrite or modify it.
