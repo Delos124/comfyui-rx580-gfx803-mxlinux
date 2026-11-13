@@ -22,7 +22,7 @@ The exact host kernel and Mesa versions are observations from one installation, 
 Pinned image:
 
 ```text
-docker.io/woodrex/pytorch-for-gfx803-dev@sha256:2cfc691b39175219352df36d51616ce18ccd387cc9f70a63135808e2d7b00cab
+docker.io/woodrex/pytorch-for-gfx803-dev@sha256:2cfc691b39175219352df36d51616ce18ccd387cc9f70a63108e2d7b00cab
 ```
 
 Recorded container stack:
@@ -56,6 +56,15 @@ ROCm-enabled PyTorch maintains compatibility with the PyTorch `torch.cuda` names
 - Some optional ComfyUI nodes may fail because optional Python packages are not included.
 - Installing the full upstream `requirements.txt`, arbitrary PyTorch builds, or PyPI `torchaudio` can replace or conflict with the custom ROCm stack.
 - The tested PyPI torchaudio 2.1.2 package failed to load because it expected `libtorch_cuda.so`; it was removed.
+
+## Validated optional packages
+
+These versions were installed and tested in the Python 3.10 environment:
+- Spandrel 0.3.4
+- Kornia 0.7.4
+- kornia-rs 0.1.5
+
+`torchaudio` is intentionally excluded. The tested PyPI wheel requires CUDA libraries that are not available in this HIP environment. Audio nodes that depend on it are unavailable.
 
 ## Do not do these things
 
