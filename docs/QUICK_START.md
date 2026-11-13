@@ -19,6 +19,13 @@ Open http://127.0.0.1:8188 in your browser.
 ./scripts/diagnose.sh
 ```
 
+**Verify optional IP-Adapter**
+```bash
+bash ./scripts/verify-ipadapter.sh
+```
+
+This checks that the IP-Adapter model loader/apply nodes are registered and that the SD 1.5 model files are present. It does not replace a real image-generation test. See [IP-Adapter setup](IP_ADAPTER.md).
+
 **Install MX Linux application-menu launchers**
 ```bash
 ./scripts/install-desktop.sh
