@@ -14,15 +14,13 @@ The `old_` prefix is intentional: this fork preserves the older node implementat
 
 ## Install the extension
 
-The installer does not install optional custom nodes. To install this known-compatible historical fork into an existing installation:
+The base installer intentionally does not install optional custom nodes. Install this known-compatible historical fork with the repository helper:
 
 ```bash
-cd "$(git rev-parse --show-toplevel)"
-ROOT="$(<.comfyui-root)"
-test -d "$ROOT/custom_nodes" || { echo "Missing custom_nodes directory"; exit 1; }
-git clone https://github.com/meimeilook/ComfyUI_IPAdapter_plus.old.git "$ROOT/custom_nodes/ComfyUI_IPAdapter_plus_old"
-git -C "$ROOT/custom_nodes/ComfyUI_IPAdapter_plus_old" checkout ebd80fd896e738085ae139a4f31c76f4c3f1af08
+./scripts/install-ipadapter.sh
 ```
+
+The helper clones the pinned upstream revision only when the target directory does not exist. If the directory already exists, it verifies the remote and revision and refuses to overwrite or modify it.
 
 If that directory already exists, do not clone over it. Inspect it first:
 
@@ -72,7 +70,7 @@ The current RX 580 installation has confirmed the IP-Adapter model at:
 
 `/workspace/comfyui/app/models/ipadapter/ip-adapter_sd15.safetensors`
 
-The CLIP Vision encoder has not yet been confirmed in the recorded installation.
+The ViT-H CLIP Vision encoder is confirmed present in the active installation at `models/clip_vision/CLIP-ViT-H-14-laion2B-s32B-b79K.safetensors`. The verifier requires this file because the standard SD 1.5 base IP-Adapter workflow cannot run without it.
 
 ## Verify registration and model files
 
@@ -82,7 +80,7 @@ From the cloned repository root, run:
 bash ./scripts/verify-ipadapter.sh
 ```
 
-The check queries ComfyUI's local `/object_info` API, verifies that the legacy model loader and apply nodes are registered, and checks the expected model and CLIP Vision file paths.
+The check verifies the pinned extension source and revision, requires both model files, and queries ComfyUI's local `/object_info` API for the legacy IP-Adapter nodes plus `CLIPVisionLoader` and `CLIPVisionEncode`.
 
 A successful node-registration check does not prove that a workflow can load the encoder or complete image generation. Complete a basic SD 1.5 IP-Adapter workflow before treating generation as validated.
 
