@@ -28,6 +28,7 @@ This is a community compatibility workaround, not an official AMD-supported ROCm
 - [Quick start](docs/QUICK_START.md)
 - [Configuration](docs/CONFIGURATION.md)
 - [Hardware compatibility](docs/HARDWARE_COMPATIBILITY.md)
+- [IP-Adapter setup and verification](docs/IP_ADAPTER.md)
 - [Troubleshooting](docs/TROUBLESHOOTING.md)
 - [Backup and restore](docs/RESTORE_AND_BACKUP.md)
 - [Repository map](docs/README_STRUCTURE.md)
