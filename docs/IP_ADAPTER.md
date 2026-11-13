@@ -106,7 +106,7 @@ Use a conservative resolution such as 512×512 and a modest step count on the 4 
 Do not use a separate Python process importing only `folder_paths` as proof that the running ComfyUI server lacks the category. Custom-node registration occurs when ComfyUI imports the extension at startup. Query the running server's `/object_info` API instead:
 
 ```bash
-curl -fsS http://127.0.0.1:8188/object_info | python3 -c 'import json,sys; d=json.load(sys.stdin); print("\\n".join(k for k in d if "ipadapter" in k.lower()))'
+curl -fsS http://127.0.0.1:8188/object_info | python3 -c 'import json,sys; d=json.load(sys.stdin); print(chr(10).join(k for k in d if "ipadapter" in k.lower()))'
 ```
 
 ### The model loader has no selectable models
