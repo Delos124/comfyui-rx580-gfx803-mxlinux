@@ -63,7 +63,7 @@ The CLIP Vision encoder has not yet been confirmed in the recorded installation.
 From the cloned repository root, run:
 
 ```bash
-./scripts/verify-ipadapter.sh
+bash ./scripts/verify-ipadapter.sh
 ```
 
 The check queries ComfyUI's local `/object_info` API, verifies that the legacy model loader and apply nodes are registered, and checks the expected model and CLIP Vision file paths.
