@@ -67,7 +67,7 @@ Example layout:
   docker/       Docker data-root, only if you configured it separately
   comfyui/
     app/
-    venv/
+    venv-gfx803/
     models/
     input/
     output/
@@ -132,7 +132,13 @@ Keep the terminal open if you want to watch the live log. To see the last 100 lo
 sudo docker logs --tail 100 comfyui-rx580
 ```
 
-## 7. Stop ComfyUI
+## 7. Optional: install IP-Adapter
+
+IP-Adapter is an optional custom node and is not installed by the base installer. The tested ComfyUI v0.2.7 setup uses the legacy `ComfyUI_IPAdapter_plus_old` fork and registers nodes with the `old_` prefix.
+
+Follow [IP-Adapter setup and verification](IP_ADAPTER.md) only if you need reference-image conditioning. That guide covers the pinned extension revision, the separate SD 1.5 IP-Adapter and ViT-H CLIP Vision model files, restart steps, and a verification script. Do not install the extension twice if it is already present.
+
+## 8. Stop ComfyUI
 
 ```bash
 ./scripts/stop.sh
@@ -140,7 +146,7 @@ sudo docker logs --tail 100 comfyui-rx580
 
 This stops the container without deleting your models, settings, or output images. Do not use `docker rm` unless you intentionally want to remove the container.
 
-## 8. Verify GPU support
+## 9. Verify GPU support
 
 Run:
 
@@ -156,7 +162,7 @@ Expected ComfyUI startup characteristics on the tested RX 580:
 - Low-VRAM mode.
 - Split cross-attention enabled.
 
-## 9. Add model files
+## 10. Add model files
 
 Place model files in the appropriate subfolders under the selected ComfyUI root, for example:
 
@@ -168,7 +174,7 @@ Place model files in the appropriate subfolders under the selected ComfyUI root,
 
 Never upload model weights to this GitHub repository. Check each model's license and source before downloading or sharing it.
 
-## 10. Update ComfyUI
+## 11. Update ComfyUI
 
 The source version and GPU image are pinned intentionally. Do not run `git pull` or update PyTorch/ROCm packages casually: newer versions can break this legacy gfx803 stack.
 
