@@ -21,3 +21,6 @@ multidict==6.0.5
 yarl==1.9.4
 trampoline==0.1.2
 torchsde==0.2.6
+spandrel==0.3.4
+kornia==0.7.4
+kornia-rs==0.1.5
