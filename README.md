@@ -51,7 +51,8 @@ chmod +x scripts/*.sh
 ./scripts/stop.sh
 ./scripts/diagnose.sh
 
-# Verify optional IP-Adapter installation
+# Install the pinned optional IP-Adapter extension, then verify it
+bash ./scripts/install-ipadapter.sh
 bash ./scripts/verify-ipadapter.sh
 ```
 
