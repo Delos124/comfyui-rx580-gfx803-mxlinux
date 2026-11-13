@@ -3,7 +3,6 @@ set -Eeuo pipefail
 
 SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
 REPO_DIR="$(cd -- "$SCRIPT_DIR/.." && pwd)"
-CONTAINER="comfyui-rx580"
 API_URL="${COMFYUI_API_URL:-http://127.0.0.1:8188/object_info}"
 EXTENSION_NAME="ComfyUI_IPAdapter_plus_old"
 EXTENSION_REMOTE="https://github.com/meimeilook/ComfyUI_IPAdapter_plus.old"
