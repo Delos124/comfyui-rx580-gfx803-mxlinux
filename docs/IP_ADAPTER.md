@@ -52,6 +52,22 @@ The IP-Adapter weight is not the image encoder. Both files are required for the 
 
 Official model source: [h94/IP-Adapter on Hugging Face](https://huggingface.co/h94/IP-Adapter). Download model weights directly from their publisher; this repository does not redistribute weights. Review the applicable model license before use.
 
+Create the model directories if they do not already exist:
+
+```bash
+ROOT="$(<.comfyui-root)"
+mkdir -p "$ROOT/models/ipadapter" "$ROOT/models/clip_vision"
+```
+
+The ViT-H encoder is published as `model.safetensors`; download it and save it under the required descriptive filename:
+
+```bash
+wget -O "$ROOT/models/clip_vision/CLIP-ViT-H-14-laion2B-s32B-b79K.safetensors" \
+  "https://huggingface.co/h94/IP-Adapter/resolve/main/models/image_encoder/model.safetensors"
+```
+
+Keep the downloaded file in the model directory only; do not add it to Git.
+
 The current RX 580 installation has confirmed the IP-Adapter model at:
 
 `/workspace/comfyui/app/models/ipadapter/ip-adapter_sd15.safetensors`
