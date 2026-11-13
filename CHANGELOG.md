@@ -8,3 +8,5 @@
 - Document the tested RX 580 gfx803 Docker/PyTorch/ROCm configuration.
 - Add beginner-focused installation, configuration, compatibility, troubleshooting, and backup guides.
 - Add pinned Python dependency list and repository safety defaults.
+- Pin validated Spandrel 0.3.4, Kornia 0.7.4, and kornia-rs 0.1.5 dependencies.
+- Clarify the Python 3.10 gfx803 environment path and the unsupported torchaudio limitation.
